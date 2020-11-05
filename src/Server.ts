@@ -1,8 +1,9 @@
+import * as cors from 'cors'
+import * as express from 'express'
+import * as getPort from 'get-port'
 import * as http from 'http'
 import * as https from 'https'
 
-import * as express from 'express'
-import * as getPort from 'get-port'
 import { chalk } from '@tarojs/helper'
 
 interface IServerOptions {
@@ -37,6 +38,7 @@ export default class Server {
   }
 
   createServer () {
+    this.app.use(cors())
     if (this.isHttps) {
       this.listenServer = https.createServer(this.app)
     } else {
