@@ -3,6 +3,7 @@ import * as express from 'express'
 import * as getPort from 'get-port'
 import * as http from 'http'
 import * as https from 'https'
+import * as kill from 'kill-port'
 
 import { chalk } from '@tarojs/helper'
 
@@ -25,6 +26,12 @@ export default class Server {
     this.isHttps = options.https || false
     this.port = options.port || 9527
     this.host = options.host || '127.0.0.1'
+
+    this.app.use(cors({
+      origin: '*',
+      methods: 'GET,PUT,POST,DELETE',
+      allowedHeaders: '*',
+    }))
     this.setMiddlewares(options.middlewares)
     this.createServer()
   }
@@ -38,7 +45,6 @@ export default class Server {
   }
 
   createServer () {
-    this.app.use(cors())
     if (this.isHttps) {
       this.listenServer = https.createServer(this.app)
     } else {
@@ -47,6 +53,7 @@ export default class Server {
   }
 
   async start () {
+    await kill(this.port, 'tcp');
     const port = await getPort({ port: this.port })
     const protocol = this.isHttps ? 'https://' : 'http://'
     this.listenServer.listen(port, this.host, () => {

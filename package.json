@@ -47,6 +47,7 @@
     "get-port": "^5.1.1",
     "glob": "^7.1.6",
     "http-proxy-middleware": "^1.0.3",
+    "kill-port": "^1.6.1",
     "path-to-regexp": "^6.1.0"
   }
 }
